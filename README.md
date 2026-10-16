@@ -1,12 +1,5 @@
-- 👋 Hello everyone, I’m Zheng Yaze, a student from CUMT, you can find my personal blog at https://zanezyz.cn/.
-- 👀 I’m interested in sports and music.
-- 🌱 I’m currently learning computer science in CUMT.
-- 💞️ I’m looking to collaborate on 
-- 📫 How to reach me qq:3636238137
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
+# Hi, I'm Yaze
 
-<!---
-zheng-2526/zheng-2526 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+I'm a computer science student at CUMT. I'm learning as I go and sharing some of that journey here.
+
+Outside of class, I'm into sports and music. I also write on my blog: [zanezyz.cn](https://zanezyz.cn/).
