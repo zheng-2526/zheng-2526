@@ -1,0 +1,38 @@
+name: Community Xiangqi
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'xiangqi/**'
+      - '.github/workflows/xiangqi.yml'
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: community-xiangqi
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  play:
+    if: github.event_name != 'issues' || startsWith(github.event.issue.title, 'xq|')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out trusted default branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Check Xiangqi rules and request handling
+        run: python3 -m unittest discover -s xiangqi -p 'test_*.py' -v
+      - name: Process moves and refresh profile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 xiangqi/bot.py
