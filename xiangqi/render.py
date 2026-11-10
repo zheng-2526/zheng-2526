@@ -1,5 +1,6 @@
 """Generate a self-contained SVG and a Markdown move selector."""
 from collections import Counter, defaultdict
+from hashlib import sha256
 from html import escape
 from urllib.parse import urlencode
 from engine import NAMES, SIDES, in_check, legal_moves, parse_move, side
@@ -84,12 +85,20 @@ def issue_link(repo, state, action, move=None):
     return f'https://github.com/{repo}/issues/new?' + urlencode(dict(title=title, body=body))
 
 
+def board_asset(state, svg=None):
+    # GitHub's /raw/ redirect drops query parameters. A distinct pathname, with
+    # a content digest, survives that redirect and cannot reuse an older board.
+    svg = board_svg(state) if svg is None else svg
+    digest = sha256(svg.encode('utf-8')).hexdigest()[:16]
+    return f'assets/xiangqi/boards/game-{state["game"]:06d}-ply-{state["ply"]:06d}-{digest}.svg'
+
+
 def section(state, repo):
     moves = legal_moves(state)
     lines = [START, '## 接力中国象棋', '',
              '**一人一步，众人成局。** 所有访客共享这盘棋，红黑轮流，欢迎接下一手。', '',
              f'**第 {state["game"]} 局 · {status_text(state)} · 已走 {state["ply"]} 手**', '',
-             f'<img src="./assets/xiangqi/board.svg?game={state["game"]}&amp;ply={state["ply"]}" width="720" alt="接力中国象棋棋盘：{status_text(state)}；黑方在上，红方在下" />', '']
+             f'<img src="./{board_asset(state)}" width="720" alt="接力中国象棋棋盘：{status_text(state)}；黑方在上，红方在下" />', '']
     if moves:
         lines += ['### 轮到你了', '',
                   '在下表找到棋子，**点击目标坐标 → 提交预填好的 Issue → 等待自动回复 → 刷新主页**。需要登录 GitHub。', '',

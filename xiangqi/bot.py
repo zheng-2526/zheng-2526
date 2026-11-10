@@ -11,7 +11,7 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from engine import InvalidMove, initial, request
-from render import board_svg, update_readme
+from render import board_asset, board_svg, update_readme
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = 'xiangqi/state.json'
@@ -23,7 +23,9 @@ def dump(value):
 
 
 def generated(state, readme, repo):
-    return {STATE: dump(state), BOARD: board_svg(state), 'README.md': update_readme(readme, state, repo)}
+    svg = board_svg(state)
+    return {STATE: dump(state), BOARD: svg, board_asset(state, svg): svg,
+            'README.md': update_readme(readme, state, repo)}
 
 
 class GitHub:

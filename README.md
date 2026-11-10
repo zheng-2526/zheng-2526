@@ -13,7 +13,7 @@ Outside of class, I also write on my blog: [zanezyz.cn](https://zanezyz.cn/).
 
 **第 2 局 · 黑方行棋 · 已走 1 手**
 
-<img src="./assets/xiangqi/board.svg?game=2&amp;ply=1" width="720" alt="接力中国象棋棋盘：黑方行棋；黑方在上，红方在下" />
+<img src="./assets/xiangqi/boards/game-000002-ply-000001-ccc387d00f695017.svg" width="720" alt="接力中国象棋棋盘：黑方行棋；黑方在上，红方在下" />
 
 ### 轮到你了
 

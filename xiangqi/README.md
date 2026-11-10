@@ -27,6 +27,7 @@
 - `render.py`：木色棋盘 SVG、合法走法入口、接力者与吃子展示。
 - `bot.py`：验证 Issue，原子提交状态、棋盘和 README，然后回复并关闭请求。
 - `state.json`：当前对局。
+- `../assets/xiangqi/boards/`：每个局面独立的 SVG 文件，文件名包含局号、手数和内容摘要，避免旧棋盘图片缓存。
 - `test_engine.py`：规则、将死/困毙、过期请求、防重放与渲染测试。
 - `../.github/workflows/xiangqi.yml`：Issue 触发及手动恢复入口。
 
@@ -47,3 +48,10 @@ python xiangqi/bot.py --local
 
 若主页需要改版，请保留 README 内 `XIANGQI:START` / `XIANGQI:END` 标记。
 机器人只更新标记内的棋局部分。
+
+## 棋盘图片缓存
+
+GitHub 的 `/raw/` 图片跳转会丢弃查询参数，因此用 `?game=...&ply=...`
+无法可靠区分棋盘版本。主页现在引用带内容摘要的独立 SVG 路径，
+每次落子和棋盘样式修改都会改变文件名。`board.svg` 仍保留为最新棋盘的副本，
+主页不再使用这个固定路径。

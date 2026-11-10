@@ -1,12 +1,14 @@
 from copy import deepcopy
 import json
+import re
 import unittest
+from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 import xml.etree.ElementTree as ET
 
 from engine import (InvalidMove, after, initial, in_check, legal_moves,
                     other, parse_move, play, position_key, pseudo, request)
-from render import board_svg, issue_link, section, update_readme, START, END
+from render import board_asset, board_svg, issue_link, section, update_readme, START, END
 from bot import generated, handle
 
 
@@ -209,6 +211,33 @@ class Presentation(unittest.TestCase):
         self.assertIn('黑方行棋', files['assets/xiangqi/board.svg'])
         self.assertIn('xq%7Cmove%7C1%7C1', files['README.md'])
         self.assertIn('@guest', files['README.md'])
+
+    def test_board_url_changes_even_if_redirect_drops_query(self):
+        before = initial(2)
+        moved = play(before, 'b7e7', 'guest', 4, 'now')
+        paths = []
+        for state in (before, moved):
+            files = generated(state, '# Hi\n', 'owner/owner')
+            src = re.search(r'<img src="([^"]+)"', files['README.md']).group(1)
+            resource = urlparse(src).path.removeprefix('./')
+            self.assertEqual(urlparse(src).query, '')
+            self.assertIn(resource, files)
+            self.assertEqual(files[resource], board_svg(state))
+            self.assertEqual(files[resource], files['assets/xiangqi/board.svg'])
+            paths.append(resource)
+        self.assertNotEqual(paths[0], paths[1])
+        self.assertIn('ply-000001', paths[1])
+
+    def test_same_board_has_stable_asset_name(self):
+        s = initial()
+        self.assertEqual(board_asset(s), board_asset(deepcopy(s)))
+        self.assertNotEqual(board_asset(s), board_asset(initial(2)))
+
+    def test_visual_changes_invalidate_asset_without_playing_a_move(self):
+        s = initial()
+        original = board_asset(s)
+        with patch('render.board_svg', return_value=board_svg(s) + '\n<!-- new theme -->'):
+            self.assertNotEqual(original, board_asset(s))
 
 
 class FakeGitHub:
