@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "game": 2,
-  "ply": 0,
-  "turn": "red",
+  "ply": 1,
+  "turn": "black",
   "board": [
     [
       "r",
@@ -83,10 +83,10 @@
     ],
     [
       "",
+      "",
+      "",
+      "",
       "C",
-      "",
-      "",
-      "",
       "",
       "",
       "C",
@@ -118,13 +118,26 @@
   "status": "playing",
   "winner": null,
   "reason": "",
-  "quiet": 0,
-  "history": [],
+  "quiet": 1,
+  "history": [
+    {
+      "ply": 1,
+      "move": "b7e7",
+      "actor": "zheng-2526",
+      "issue": 4,
+      "at": "2026-11-10T12:02:12.878618+00:00",
+      "piece": "C",
+      "captured": "",
+      "check": false
+    }
+  ],
   "positions": [
-    "rheakaehr/........./.c.....c./p.p.p.p.p/........./........./P.P.P.P.P/.C.....C./........./RHEAKAEHR:red"
+    "rheakaehr/........./.c.....c./p.p.p.p.p/........./........./P.P.P.P.P/.C.....C./........./RHEAKAEHR:red",
+    "rheakaehr/........./.c.....c./p.p.p.p.p/........./........./P.P.P.P.P/....C..C./........./RHEAKAEHR:black"
   ],
   "processed_issues": [
-    3
+    3,
+    4
   ],
-  "last_move": null
+  "last_move": "b7e7"
 }
